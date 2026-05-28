@@ -1,0 +1,9 @@
+\frametitle{refs.bib 示例}
+\begin{lstlisting}[language=TeX]
+@book{ref1,
+  author    = {Leslie Lamport},
+  title     = {LaTeX: A Document Preparation System},
+  publisher = {Addison-Wesley},
+  year      = {1994}
+}
+\end{lstlisting}

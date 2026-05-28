@@ -1,0 +1,373 @@
+\documentclass{ECUTbeamer}
+
+% ----------------------------------------------------------------------
+% 学院 logo 接口
+% ----------------------------------------------------------------------
+% 写法：\logo{名称}
+%
+% 当前 logo/ 文件夹中可直接使用的名称：
+%   学校、地科学院、理学院、土建学院、智造学院
+%
+% 示例：
+%   \logo{理学院}     会自动调用 logo/理学院.png
+%   \logo{土建学院}   会自动调用 logo/土建学院.png
+%   \logo{学校}       会自动调用 logo/学校.png
+%
+% 新增学院 logo 的方法：
+%   1. 将图片放入 logo/ 文件夹；
+%   2. 文件命名为“学院名称.png”“学院名称.jpg”或“学院名称.pdf”；
+%   3. 在这里写 \logo{学院名称}。
+%
+% 例如新增“信息学院”：
+%   放入 logo/信工学院.png
+%   然后写 \logo{信工学院}
+%
+% 如果填写的名称找不到对应文件，模板会自动使用 logo/学校.png。
+\logo{土建学院}
+
+\title[基于 LaTeX 的幻灯片设计]{}
+\subtitle{\Large 基于 LaTeX 的幻灯片设计}
+\institute[]{\normalsize 理学院\\~\\LaTeX 幻灯片模板示例}
+\author[XX]{汇报人：XX\\~\\指导教师：XX}
+\date{XX}
+
+\begin{document}
+
+\ECUTTitleFrame
+\ECUTOutlineFrame
+
+\section{快速开始}
+
+\begin{frame}[fragile]{最小文件结构}
+	\begin{columns}[T,totalwidth=\textwidth]
+		\begin{column}{0.48\textwidth}
+			\zihao{-4}
+			\begin{itemize}
+				\item \texttt{main.tex}：只写个人信息、章节和正文。
+				\item \texttt{ECUTbeamer.cls}：保存主题、logo、水印和导航。
+				\item \texttt{logo/}：保存学校水印和各学院 logo。
+				\item \texttt{figures/}：建议单独保存正文图片。
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.48\textwidth}
+\begin{lstlisting}[language=TeX]
+\documentclass{ECUTbeamer}
+\logo{理学院}
+
+\title[短标题]{}
+\subtitle{\Large 正标题}
+\author[XX]{汇报人：XX}
+\institute[]{理学院}
+\date{XX}
+
+\begin{document}
+\ECUTTitleFrame
+\ECUTOutlineFrame
+\end{document}
+\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{标题、章节与页面}
+	\zihao{-4}
+	Beamer 的基本组织方式是“章节 + 页面”。章节会出现在顶部导航栏中，也会进入目录页。
+
+	\vspace{0.35cm}
+
+\begin{lstlisting}[language=TeX,escapeinside={(*@}{@*)}]
+\section{研究背景}
+
+\begin{frame}{页面标题}
+  这里填写正文内容。
+(*@\texttt{\textbackslash end\{frame\}}@*)
+\end{lstlisting}
+
+	\vspace{0.2cm}
+	若只想新增一页，复制一个 \texttt{frame} 环境即可；若要新增一个导航栏栏目，添加一个 \texttt{\textbackslash section}。
+\end{frame}
+
+\section{文字与公式}
+
+\begin{frame}{列表与强调}
+	\zihao{-4}
+	\begin{block}{常用写法}
+		\begin{itemize}
+			\item 用 \texttt{itemize} 写无序列表，用 \texttt{enumerate} 写编号列表。
+			\item 重点词可以使用 \textcolor{red}{红色强调} 或 \textbf{加粗强调}。
+			\item 页面内容较多时，优先使用 \texttt{columns} 分栏，让阅读路径更清楚。
+		\end{itemize}
+	\end{block}
+
+	\begin{exampleblock}{编号列表}
+		\begin{enumerate}
+			\item 先写结论，再放证据。
+			\item 每页只突出一个核心信息。
+			\item 图、表、公式都要服务于页面标题。
+		\end{enumerate}
+	\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{行内公式与独立公式}
+	\zihao{-4}
+	行内公式适合嵌入句子，例如 $E=mc^2$。独立公式适合展示推导、模型或关键结论：
+
+	\[
+		\min_{\boldsymbol{x}} f(\boldsymbol{x})
+		\quad
+		\mathrm{s.t.}
+		\quad
+		g_i(\boldsymbol{x}) \le 0,\ i=1,2,\ldots,m.
+	\]
+
+	\vspace{0.1cm}
+
+\begin{lstlisting}[language=TeX]
+行内公式：$E=mc^2$
+
+\[
+  \min_{\boldsymbol{x}} f(\boldsymbol{x})
+  \quad \mathrm{s.t.}\quad
+  g_i(\boldsymbol{x}) \le 0
+\]
+\end{lstlisting}
+\end{frame}
+
+\section{表格}
+
+\begin{frame}[fragile]{三线表}
+	\zihao{-4}
+	论文和汇报中建议使用三线表，避免过多竖线。模板已经加载 \texttt{booktabs}。
+
+	\vspace{0.25cm}
+	\centering
+	\renewcommand{\arraystretch}{1.25}
+	\begin{tabular}{lccc}
+		\toprule
+		方法 & 精度 & 时间/s & 备注 \\
+		\midrule
+		方法 A & 0.91 & 12.4 & 基准结果 \\
+		方法 B & 0.94 & 10.8 & 收敛较快 \\
+		方法 C & \textcolor{red}{0.97} & \textcolor{red}{8.6} & 推荐方案 \\
+		\bottomrule
+	\end{tabular}
+
+	\vspace{0.3cm}
+
+\begin{lstlisting}[language=TeX,basicstyle=\ttfamily\tiny]
+\begin{tabular}{lccc}
+  \toprule
+  方法 & 精度 & 时间/s & 备注 \\
+  \midrule
+  方法 A & 0.91 & 12.4 & 基准结果 \\
+  \bottomrule
+\end{tabular}
+\end{lstlisting}
+\end{frame}
+
+\section{图片}
+
+\begin{frame}[fragile]{插入单张图片}
+	\begin{columns}[T,totalwidth=\textwidth]
+		\begin{column}{0.48\textwidth}
+			\zihao{-4}
+			图片建议统一放在 \texttt{figures/} 文件夹，使用相对路径引用。真实汇报时，把例图路径换成自己的图片即可。
+
+			\vspace{0.12cm}
+
+\begin{lstlisting}[language=TeX,basicstyle=\ttfamily\tiny]
+\begin{figure}
+  \centering
+  \includegraphics[width=0.62\linewidth]
+    {logo/ECUT.pdf}
+  \caption{单张图片示例}
+\end{figure}
+\end{lstlisting}
+		\end{column}
+		\begin{column}{0.48\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.62\linewidth]{logo/ECUT.pdf}
+				\caption{单张图片示例}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{多图片排版}
+	\zihao{-4}
+	多张图片常用 \texttt{minipage} 控制宽度，适合做算法对比、实验截图或案例展示。
+
+	\vspace{0.15cm}
+
+	\begin{figure}
+		\centering
+		\begin{minipage}{0.3\textwidth}
+			\centering
+			\includegraphics[width=0.78\linewidth]{logo/理学院.png}\\
+			\scriptsize 图 A
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.3\textwidth}
+			\centering
+			\includegraphics[width=0.78\linewidth]{logo/ECUT_logo.pdf}\\
+			\scriptsize 图 B
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.3\textwidth}
+			\centering
+			\includegraphics[width=0.78\linewidth]{logo/ECUT.pdf}\\
+			\scriptsize 图 C
+		\end{minipage}
+	\end{figure}
+
+\begin{lstlisting}[language=TeX]
+\begin{minipage}{0.3\textwidth}
+  \centering
+  \includegraphics[width=0.78\linewidth]{figures/a.png}
+\end{minipage}
+\end{lstlisting}
+\end{frame}
+
+\section{TikZ 绘图}
+
+\begin{frame}[fragile]{TikZ 流程图}
+	\begin{columns}[T,totalwidth=\textwidth]
+		\begin{column}{0.46\textwidth}
+			\zihao{-4}
+			TikZ 适合绘制流程图、结构图、坐标示意和简单机制图。优点是清晰、可缩放、方便统一配色。
+
+			\vspace{0.25cm}
+
+\begin{lstlisting}[language=TeX,basicstyle=\ttfamily\tiny]
+\begin{tikzpicture}[
+  node distance=1.2cm,
+  box/.style={
+    draw=UniBlue, rounded corners, fill=UniBlue!8,
+    minimum width=2.2cm, minimum height=0.7cm, align=center
+  },
+  arrow/.style={-Latex, thick, UniBlue}
+]
+  \node[box] (a) {输入};
+  \node[box, right=of a] (b) {处理};
+  \node[box, right=of b] (c) {输出};
+  \draw[arrow] (a) -- (b);
+  \draw[arrow] (b) -- (c);
+\end{tikzpicture}
+\end{lstlisting}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering
+			\begin{tikzpicture}[
+				scale=0.78,
+				transform shape,
+				node distance=1.05cm,
+				box/.style={
+					draw=UniBlue,
+					rounded corners,
+					fill=UniBlue!8,
+					minimum width=1.8cm,
+					minimum height=0.65cm,
+					align=center
+				},
+				arrow/.style={-Latex, thick, UniBlue}
+			]
+				\node[box] (a) {输入};
+				\node[box, right=of a] (b) {处理};
+				\node[box, right=of b] (c) {输出};
+				\node[box, below=of b] (d) {反馈};
+				\draw[arrow] (a) -- (b);
+				\draw[arrow] (b) -- (c);
+				\draw[arrow] (c.south) |- (d.east);
+				\draw[arrow] (d.west) -| (a.south);
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{TikZ 坐标示意}
+	\begin{columns}[T,totalwidth=\textwidth]
+		\begin{column}{0.48\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=0.9]
+				\draw[->, thick] (-0.2,0) -- (5.2,0) node[right] {$x$};
+				\draw[->, thick] (0,-0.2) -- (0,3.5) node[above] {$y$};
+				\draw[UniBlue, very thick, domain=0.2:4.8, samples=80] plot (\x,{0.45*\x+0.5*sin(2*\x r)+1});
+				\fill[UniRed] (3,{0.45*3+0.5*sin(6 r)+1}) circle (2.5pt) node[above right] {关键点};
+				\draw[dashed, UniGray] (3,0) -- (3,{0.45*3+0.5*sin(6 r)+1});
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.48\textwidth}
+\begin{lstlisting}[language=TeX]
+\begin{tikzpicture}
+  \draw[->] (-0.2,0) -- (5.2,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,3.5) node[above] {$y$};
+  \draw[UniBlue, very thick, domain=0.2:4.8]
+    plot (\x,{0.45*\x+0.5*sin(2*\x r)+1});
+\end{tikzpicture}
+\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\section{参考文献}
+
+\begin{frame}[fragile]{参考文献引用}
+	\zihao{-4}
+	在正文中使用 \texttt{\textbackslash cite\{ref1\}} 即可引用文献。例如：
+	基于 Beamer 的幻灯片可以直接使用 LaTeX 生态中的公式、表格和参考文献工具\cite{ref1}。
+
+	\vspace{0.25cm}
+
+\begin{lstlisting}[language=TeX]
+正文引用：
+\cite{ref1}
+
+文末输出：
+\bibliographystyle{gbt7714-numerical}
+\bibliography{refs}
+\end{lstlisting}
+
+	\vspace{0.15cm}
+	引用条目写在 \texttt{refs.bib} 中，键名就是 \texttt{ref1}。
+\end{frame}
+
+\begin{frame}[fragile]{refs.bib 示例}
+\begin{lstlisting}[language=TeX]
+@book{ref1,
+  author    = {Leslie Lamport},
+  title     = {LaTeX: A Document Preparation System},
+  publisher = {Addison-Wesley},
+  year      = {1994}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{参考文献}
+	\zihao{6}
+	\bibliographystyle{gbt7714-numerical}
+	\bibliography{refs}
+\end{frame}
+
+\section{综合建议}
+
+\begin{frame}{排版检查清单}
+	\zihao{-4}
+	\begin{block}{完成汇报前建议检查}
+		\begin{itemize}
+			\item 标题是否说明本页结论，而不只是写主题词。
+			\item 字号是否足够大，投影后能否看清。
+			\item 每页图片、表格、公式是否只服务一个核心信息。
+			\item 图片是否清晰，是否避免了拉伸变形。
+			\item 公式和表格是否有足够留白，避免贴近页面边缘。
+		\end{itemize}
+	\end{block}
+
+	\begin{alertblock}{模板接口}
+		更换学院 logo 时，只需修改导言区的 \texttt{\textbackslash logo\{学院名\}}。例如当前使用的是 \texttt{\textbackslash logo\{理学院\}}。
+	\end{alertblock}
+\end{frame}
+
+\ECUTThanksFrame[谢谢观看！]
+
+\end{document}
